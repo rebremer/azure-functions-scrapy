@@ -303,4 +303,4 @@ startServiceViaRest OOZIE
 sleep 30
 
 # copy file
-hadoop distcp wasbs://sou@thso.blob.core.windows.net/ wasbs://sin@$thsi.blob.core.windows.net/
+hadoop distcp wasbs://sou@thso.blob.core.windows.net/ wasbs://sin@thsi.blob.core.windows.net/
