@@ -13,35 +13,35 @@ if [ -z "$1" ]
     then
         usage
         echo "Source storage account name must be provided."
-        exit 137
+        exit 133
 fi
 
 if [ -z "$2" ]
     then
         usage
         echo "Source account key must be provided."
-        exit 138
+        exit 134
 fi
 
 if [ -z "$3" ]
     then
         usage
         echo "Source account container must be provided."
-        exit 138
+        exit 135
 fi
 
 if [ -z "$4" ]
     then
         usage
         echo "Sink storage account name must be provided."
-        exit 137
+        exit 136
 fi
 
 if [ -z "$5" ]
     then
         usage
         echo "Sink account key must be provided."
-        exit 138
+        exit 137
 fi
 
 if [ -z "$6" ]
@@ -89,7 +89,7 @@ echo "Validate storage account creds:"
 CREDS_VALIDATION=$(echo -e "from azure.storage.blob import BlobService\nvalid=True\ntry:\n\tblob_service = BlobService(account_name='$STORAGEACCOUNTNAME_SINK', account_key='$STORAGEACCOUNTKEY_SINK')\n\tblob_service.get_blob_service_properties()\nexcept Exception as e:\n\tvalid=False\nprint valid"| sudo python)
 if [[ $CREDS_VALIDATION == "False" ]]; then
     echo "Invalid Credentials provided for storage account sink"
-    exit 139
+    exit 140
 else
     echo "Successfully validated storage account sink credentials."
 fi
@@ -109,7 +109,7 @@ checkHostNameAndSetClusterName() {
 	#Check if values retrieved are empty, if yes, exit with error
 	if [[ -z $PRIMARYHEADNODE ]]; then
 	echo "Could not determine primary headnode."
-	exit 139
+	exit 141
 	fi
 
 	fullHostName=$(hostname -f)
@@ -124,7 +124,7 @@ checkHostNameAndSetClusterName() {
         CLUSTERNAME=$(echo -e "import hdinsight_common.ClusterManifestParser as ClusterManifestParser\nprint ClusterManifestParser.parse_local_manifest().deployment.cluster_name" | python)
         if [ $? -ne 0 ]; then
             echo "[ERROR] Cannot determine cluster name. Exiting!"
-            exit 133
+            exit 142
         fi
     fi
     echo "Cluster Name=$CLUSTERNAME"
@@ -153,19 +153,19 @@ else
 
 	if [ -z "$CERT" ];then
 		echo "Could not locate cert for encryption"
-		exit 142
+		exit 143
 	fi
 
 	echo $STORAGEACCOUNTKEY_SOURCE | sudo openssl cms -encrypt -outform PEM -out storagekey_source.txt $CERT
 	if (( $? )); then
 		echo "Could not encrypt storage account key source"
-		exit 140
+		exit 144
 	fi
 
 	echo $STORAGEACCOUNTKEY_SINK | sudo openssl cms -encrypt -outform PEM -out storagekey_sink.txt $CERT
 	if (( $? )); then
 		echo "Could not encrypt storage account key sink"
-		exit 140
+		exit 145
 	fi
 
 	STORAGEACCOUNTKEY_SOURCE=$(echo -e "import re\n\nfile = open('storagekey_source.txt', 'r')\nfor line in file.read().splitlines():\n\tif '-----BEGIN CMS-----' in line or '-----END CMS-----' in line:\n\t\tcontinue\n\telse:\n\t\tprint line\nfile.close()" | sudo python)
@@ -173,7 +173,7 @@ else
 	if [ -z "$STORAGEACCOUNTKEY_SOURCE" ];
 	then
 		echo "Storage account key could not be stripped off header values form encrypted key SOURCE"
-		exit 141
+		exit 146
 	fi
 	rm storagekey_source.txt
 
@@ -182,7 +182,7 @@ else
 	if [ -z "$STORAGEACCOUNTKEY_SINK" ];
 	then
 		echo "Storage account key could not be stripped off header values form encrypted key SINK"
-		exit 141
+		exit 147
 	fi
 	rm storagekey_sink.txt
 
@@ -195,7 +195,7 @@ validateUsernameAndPassword() {
 	
     if [[ $coreSiteContent == *"[ERROR]"* && $coreSiteContent == *"Bad credentials"* ]]; then
         echo "[ERROR] Username and password are invalid. Exiting!"
-        exit 134
+        exit 148
     fi
 }
 
@@ -206,7 +206,7 @@ updateAmbariConfigs() {
     if [[ $updateResult_source != *"Tag:version"* ]] && [[ $updateResult_source == *"[ERROR]"* ]]; then
         echo "[ERROR] Failed to update core-site source. Exiting!"
         echo $updateResult_source
-        exit 135
+        exit 149
     fi
     echo "Added property: 'fs.azure.account.key.$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net' with storage account key source"
 
@@ -214,7 +214,7 @@ updateAmbariConfigs() {
 	if [[ $updateResult_source != *"Tag:version"* ]] && [[ $updateResult_source == *"[ERROR]"* ]]; then
 		echo "[ERROR] Failed to update core-site. Exiting!"
 		echo $updateResult_source
-		exit 135
+		exit 150
 	fi
 	echo "Added property source: 'fs.azure.account.keyprovider.$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net':org.apache.hadoop.fs.azure.$KEYPROVIDER "
 
@@ -224,7 +224,7 @@ updateAmbariConfigs() {
     if [[ $updateResult_sink != *"Tag:version"* ]] && [[ $updateResult_sink == *"[ERROR]"* ]]; then
         echo "[ERROR] Failed to update core-site sink. Exiting!"
         echo $updateResult_sink
-        exit 135
+        exit 151
     fi
     echo "Added property: 'fs.azure.account.key.$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net' with storage account key sink"
 
@@ -232,7 +232,7 @@ updateAmbariConfigs() {
 	if [[ $updateResult_sink != *"Tag:version"* ]] && [[ $updateResult_sink == *"[ERROR]"* ]]; then
 		echo "[ERROR] Failed to update core-site. Exiting!"
 		echo $updateResult_sink
-		exit 135
+		exit 152
 	fi
 	echo "Added property sink: 'fs.azure.account.keyprovider.$STORAGEACCOUNTNAME_SINK.blob.core.windows.net':org.apache.hadoop.fs.azure.$KEYPROVIDER "
 
@@ -242,7 +242,7 @@ updateAmbariConfigs() {
 stopServiceViaRest() {
     if [ -z "$1" ]; then
         echo "Need service name to stop service"
-        exit 136
+        exit 153
     fi
     SERVICENAME=$1
     echo "Stopping $SERVICENAME"
@@ -252,7 +252,7 @@ stopServiceViaRest() {
 startServiceViaRest() {
     if [ -z "$1" ]; then
         echo "Need service name to start service"
-        exit 136
+        exit 154
     fi
     sleep 2
     SERVICENAME=$1
