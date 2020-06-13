@@ -71,7 +71,7 @@ if [[ $4 == *blob.core.windows.net* ]]; then
 fi
 echo STORAGE ACCOUNT IS: $STORAGEACCOUNTNAME_SINK
 
-STORAGEACCOUNTNAME_SINK=$5
+STORAGEACCOUNTKEY_SINK=$5
 STORAGEACCOUNTCONTAINER_SINK=$6
 
 #validate storage account credentials SOURCE
