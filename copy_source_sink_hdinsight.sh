@@ -291,7 +291,7 @@ stopServiceViaRest HDFS
 #stopServiceViaRest HIVE
 
 #sleep for 30 seconds to reduce the possibility of race condition in stopping and starting services
-sleep 60
+sleep 30
 
 #startServiceViaRest HIVE
 startServiceViaRest HDFS
@@ -299,8 +299,8 @@ startServiceViaRest HDFS
 #startServiceViaRest YARN
 #startServiceViaRest OOZIE
 
-#sleep 
-sleep 60
+#wait 10 minutes such that HDFS nodes are fully up and running again
+sleep 600
 
 # copy file
 hadoop distcp wasbs://$STORAGEACCOUNTCONTAINER_SOURCE@$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net/ wasbs://$STORAGEACCOUNTCONTAINER_SINK@$STORAGEACCOUNTNAME_SINK.blob.core.windows.net/
