@@ -300,7 +300,8 @@ startServiceViaRest HDFS
 #startServiceViaRest OOZIE
 
 #wait 10 minutes such that HDFS nodes are fully up and running again
-sleep 600
-
 # copy file
-hadoop distcp wasbs://$STORAGEACCOUNTCONTAINER_SOURCE@$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net/ wasbs://$STORAGEACCOUNTCONTAINER_SINK@$STORAGEACCOUNTNAME_SINK.blob.core.windows.net/
+#hadoop distcp wasbs://$STORAGEACCOUNTCONTAINER_SOURCE@$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net/ wasbs://$STORAGEACCOUNTCONTAINER_SINK@$STORAGEACCOUNTNAME_SINK.blob.core.windows.net/
+cd /tmp
+wget https://github.com/rebremer/azure-functions-scrapy/edit/master/copy_distcp.sh
+chmod 777 copy_distcp.sh
