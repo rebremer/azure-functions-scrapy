@@ -284,23 +284,23 @@ echo "***************************UPDATING AMBARI CONFIG*************************
 updateAmbariConfigs
 echo "***************************UPDATED AMBARI CONFIG**************************"
 
-stopServiceViaRest OOZIE
-stopServiceViaRest YARN
-stopServiceViaRest MAPREDUCE2
-stopServiceViaRest HDFS
-stopServiceViaRest HIVE
+#stopServiceViaRest OOZIE
+#stopServiceViaRest YARN
+#stopServiceViaRest MAPREDUCE2
+#stopServiceViaRest HDFS
+#stopServiceViaRest HIVE
 
 #sleep for 30 seconds to reduce the possibility of race condition in stopping and starting services
-sleep 60
+#sleep 30
 
-startServiceViaRest HIVE
-startServiceViaRest HDFS
-startServiceViaRest MAPREDUCE2
-startServiceViaRest YARN
-startServiceViaRest OOZIE
+#startServiceViaRest HIVE
+#startServiceViaRest HDFS
+#startServiceViaRest MAPREDUCE2
+#startServiceViaRest YARN
+#startServiceViaRest OOZIE
 
 #sleep 
-sleep 60
+sleep 30
 
 # copy file
-hadoop distcp wasbs://sourc@testhdistorsource.blob.core.windows.net/ wasbs://sink@testhdistorsink.blob.core.windows.net/
+hadoop distcp wasbs://source@testhdistor2source.blob.core.windows.net/ wasbs://sink@testhdistor2sink.blob.core.windows.net/
