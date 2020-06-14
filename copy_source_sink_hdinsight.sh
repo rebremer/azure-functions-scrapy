@@ -303,4 +303,4 @@ startServiceViaRest HDFS
 sleep 60
 
 # copy file
-hadoop distcp wasbs://source@testhdistor2source.blob.core.windows.net/ wasbs://sink@testhdistor2sink.blob.core.windows.net/
+hadoop distcp wasbs://$STORAGEACCOUNTCONTAINER_SOURCE@$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net/ wasbs://$STORAGEACCOUNTCONTAINER_SINK@$STORAGEACCOUNTNAME_SINK.blob.core.windows.net/
