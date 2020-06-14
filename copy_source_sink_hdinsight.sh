@@ -303,5 +303,5 @@ startServiceViaRest HDFS
 # copy file
 #hadoop distcp wasbs://$STORAGEACCOUNTCONTAINER_SOURCE@$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net/ wasbs://$STORAGEACCOUNTCONTAINER_SINK@$STORAGEACCOUNTNAME_SINK.blob.core.windows.net/
 cd /tmp
-wget https://github.com/rebremer/azure-functions-scrapy/edit/master/copy_distcp.sh
+wget https://raw.githubusercontent.com/rebremer/azure-functions-scrapy/master/copy_distcp.sh
 chmod 777 copy_distcp.sh
