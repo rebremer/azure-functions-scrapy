@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# original script, only 2 storage accounts are added instead of 1
 usage() {
     echo ""
     echo "Usage: sudo -E bash add-storage-account.sh <storage-account-name> <storage-account-key> [-p]" ;
@@ -284,24 +285,17 @@ echo "***************************UPDATING AMBARI CONFIG*************************
 updateAmbariConfigs
 echo "***************************UPDATED AMBARI CONFIG**************************"
 
-#stopServiceViaRest OOZIE
-#stopServiceViaRest YARN
-#stopServiceViaRest MAPREDUCE2
+stopServiceViaRest OOZIE
+stopServiceViaRest YARN
+stopServiceViaRest MAPREDUCE2
 stopServiceViaRest HDFS
-#stopServiceViaRest HIVE
+stopServiceViaRest HIVE
 
 #sleep for 30 seconds to reduce the possibility of race condition in stopping and starting services
 sleep 30
 
-#startServiceViaRest HIVE
+startServiceViaRest HIVE
 startServiceViaRest HDFS
-#startServiceViaRest MAPREDUCE2
-#startServiceViaRest YARN
-#startServiceViaRest OOZIE
-
-#wait 10 minutes such that HDFS nodes are fully up and running again
-# copy file
-#hadoop distcp wasbs://$STORAGEACCOUNTCONTAINER_SOURCE@$STORAGEACCOUNTNAME_SOURCE.blob.core.windows.net/ wasbs://$STORAGEACCOUNTCONTAINER_SINK@$STORAGEACCOUNTNAME_SINK.blob.core.windows.net/
-cd /tmp
-wget https://raw.githubusercontent.com/rebremer/azure-functions-scrapy/master/copy_distcp.sh
-chmod 777 copy_distcp.sh
+startServiceViaRest MAPREDUCE2
+startServiceViaRest YARN
+startServiceViaRest OOZIE
